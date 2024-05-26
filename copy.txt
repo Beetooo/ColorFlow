@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.HashSet;
+import java.util.Stack;
 
 public class flow implements ActionListener, MouseListener, MouseMotionListener {
     static JFrame window;
@@ -62,98 +63,87 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
 
     public static int[][] generatePuzzle(int size) {
         int n;
-        int[] position;
+        int[] position = {0, 0};
         puzzle = new int[size][size];
         int[][] ends = new int[size][size];
         int[] next;
         int[][] options = new int[4][2];
         int color=3;
         int filled=0;
-        int[]directionX={-1,1,0,0};
-        int[]directionY={0,0,-1,1};
-        while(filled<size*size&&color<12) {
-            int[][]spots=new int[size*size][2];
-            int z=0;
-            System.out.println();
-            for(int r=0;r<size;r++){
-                for(int c=0;c<size;c++){
-                    if(puzzle[r][c]==0&&fillable(c, r)<2){
-                        spots[z][0]=r;
-                        spots[z][1]=c;
-                        z++;
-                    }
-                    System.out.print(puzzle[r][c]);
-                }
-                System.out.println();
+        while(filled<25) {
+            position[0] = (int) (Math.random() * size);
+            position[1] = (int) (Math.random() * size);
+            while (puzzle[position[0]][position[1]] != 0) {
+                position[0] = (int) (Math.random() * size);
+                position[1] = (int) (Math.random() * size);
             }
-            position=spots[(int)(Math.random()*z)];
             puzzle[position[0]][position[1]] = color;
-            filled++;
             ends[position[0]][position[1]] = color;
             int i = 0;
-            while (i < size*2-4||fillable(position[1], position[0])!=0) {
+            while (i < size&&fillable(position[1], position[0], true)) {
                 n = 0;
-                for (int j = 0; j < 4; j++) {
-                    int newX = position[1] + directionX[j];
-                    int newY = position[0] + directionY[j];
-                    if(inBounds(newX,newY)&&puzzle[newY][newX]==0&&fillable(newX, newY)<2){
-                        options[n][0]=directionX[j];
-                        options[n][1]=directionY[j];
-                        n++;
-                    }
+                if (position[0] + 1 < size && puzzle[position[0] + 1][position[1]] == 0) {
+                    options[n][0] = 1;
+                    options[n][1] = 0;
+                    n++;
                 }
-                if(n==0)break;
+                if (position[0] - 1 >= 0 && puzzle[position[0] - 1][position[1]] == 0) {
+                    options[n][0] = -1;
+                    options[n][1] = 0;
+                    n++;
+                }
+                if (position[1] + 1 < size && puzzle[position[0]][position[1] + 1] == 0) {
+                    options[n][0] = 0;
+                    options[n][1] = 1;
+                    n++;
+                }
+                if (position[1] - 1 >= 0 && puzzle[position[0]][position[1] - 1] == 0) {
+                    options[n][0] = 0;
+                    options[n][1] = -1;
+                    n++;
+                }
+                if (n == 0) {
+                    break;
+                }
                 next = options[(int) (Math.random() * n)];
-                position[1] += next[0];
-                position[0] += next[1];
-                System.out.println(position[1]+","+position[0]);
-                puzzle[position[0]][position[1]] = color;
-                filled++;
-                i++;
+                if(fillable((position[1] + next[1]), (position[0] + next[0]), false)){
+                    position[0] = position[0] + next[0];
+                    position[1] = position[1] + next[1];
+                    puzzle[position[0]][position[1]] = color;
+                    filled++;
+                    i++;
+                }
             }
             ends[position[0]][position[1]] = color;
             color++;
         }
         return ends;
     }
-
-    public static int fillable(int positionX, int positionY) {
-        int[] directionX = {-1, 1, 0, 0};
-        int[] directionY = {0, 0, -1, 1};
-        int adjAloneZeros = 0;
-    
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                if (r == positionY && c == positionX) continue;
-                if (puzzle[r][c] == 0) {
-                    boolean connected = false;
-    
-                    for (int i = 0; i < 4; i++) {
-                        int newX = c + directionX[i];
-                        int newY = r + directionY[i];
-                        if (newY == positionY && newX == positionX) continue;
-                        if (inBounds(newX, newY)) {
-                            if(puzzle[newY][newX]==0){
-                                connected = true;
-                                break;
-                            }
-                        }
-                    }
-    
-                    if (!connected) {
-                        boolean isAdj=false;
-                        for (int i = 0; i < 4; i++) {
-                            if (c  == positionX + directionX[i] && r  == positionY + directionY[i]) {
-                                adjAloneZeros++;
-                                isAdj=true;
-                            }
-                        }
-                        if (!isAdj) return 2;
-                    }
-                }
-            }
-        }
-        return adjAloneZeros;
+    public static boolean fillable(int positionX,int positionY,boolean ending){
+        // int[]directionX={-1,1,0,0};
+        // int[]directionY={0,0,-1,1};
+        // boolean[][] visited = new boolean[size][size];
+        // boolean connected;
+        // for (int r=0;r<size;r++) {
+        //     for (int c=0;c<size;c++) {
+        //         if(puzzle[r][c]==0&&!visited[r][c]){
+        //             connected=false;
+        //             visited[r][c] = true;
+        //             for (int i = 0; i < 4; i++) {
+        //                 int newX = c + directionX[i];
+        //                 int newY = r + directionY[i];
+        //                 if(inBounds(newX,newY)&&puzzle[newY][newX]==0){
+        //                     visited[newY][newX] = true;
+        //                     connected=true;
+        //                     break;
+        //                 }
+        //             }
+        //             if(ending)return false;
+        //             else if(!connected&&!((Math.abs(positionX-c)==0&&Math.abs(positionY-r)==1)||(Math.abs(positionX-c)==1&&Math.abs(positionY-r)==0)))return false;
+        //         }
+        //     }
+        // }
+        return true;
     }
     public static boolean inBounds(int x,int y) {
         return x >= 0 && x < size && y >= 0 && y < size;
@@ -186,6 +176,13 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
             endPoints = generatePuzzle(size);
             paths.clear();
             filledCells.clear();
+            System.out.println();
+            for (int[] a : puzzle) {
+                for (int i : a) {
+                    System.out.print(i);
+                }
+                System.out.println();
+            }
             repaint();
         }
 
@@ -317,8 +314,8 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
             int gridX = e.getX() / (500 / size);
             int gridY = e.getY() / (500 / size);
             for (ArrayList<int[]> p : paths) {
-                for (int point=1;point<p.size();point++) {
-                    if (p.get(point)[0] == gridX && p.get(point)[1] == gridY) {
+                for (int[] point : p) {
+                    if (point[0] == gridX && point[1] == gridY) {
                         ((GridPanel) board).clearPathAndResetDrawing(p);
                         return;
                     }

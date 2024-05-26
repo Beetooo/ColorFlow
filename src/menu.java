@@ -6,9 +6,9 @@ import java.awt.event.*;
 public class menu implements ActionListener, ItemListener {
     static JFrame menu;
     static String[][] theme = {
-        {"#0D1B1E","#394D52","#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"},
-        {"#FFF8DC","#CBC5A8", "#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#6A4C93"},
-        {"#3A3561","#5D5882","#123456", "#654321", "#FEDCBA", "#ABCDEF", "#111111"}
+        {"#232B2D", "#0D1B1E", "#FFF7FA", "#6A4C93", "#FF595E", "#FFCA3A", "#8AC926", "#1982C4","#065143","#7F7EFF","#562C2C","#E0E0CE","#E9724C"},
+        {"#CBC5A8", "#FFF8DC", "#FFDA36", "#f15bb5", "#9b5de5", "#fee440", "#00bbf9", "#00f5d4","#065143","#7F7EFF","#562C2C","#E0E0CE","#E9724C"},
+        {"#5D5882", "#3A3561", "#000000", "#e8aa14", "#1be7ff", "#6eeb83", "#e4ff1a", "#ff5714","#065143","#7F7EFF","#562C2C","#E0E0CE","#E9724C"}
     };
     static int selectedTheme=0;
     static JComboBox<String> themes;
@@ -32,15 +32,19 @@ public class menu implements ActionListener, ItemListener {
         themes = new JComboBox<String>(colorOptions);
         themes.setSelectedIndex(selectedTheme);
 
-        easyMode.setBounds(250, 300, 100, 30);
-        easyMode.setBackground(Color.decode(theme[selectedTheme][6]));
-        mediumMode.setBounds(480, 300, 100, 30);
-        mediumMode.setBackground(Color.decode(theme[selectedTheme][6]));
-        hardMode.setBounds(710, 300, 100, 30);
-        hardMode.setBackground(Color.decode(theme[selectedTheme][6]));
+        easyMode.setBounds(250, 280, 100, 40);
+        easyMode.setBackground(Color.decode(theme[selectedTheme][3]));
+        easyMode.setForeground(Color.decode(theme[selectedTheme][2]));
+        mediumMode.setBounds(480, 280, 100, 40);
+        mediumMode.setBackground(Color.decode(theme[selectedTheme][3]));
+        mediumMode.setForeground(Color.decode(theme[selectedTheme][2]));
+        hardMode.setBounds(710, 280, 100, 40);
+        hardMode.setBackground(Color.decode(theme[selectedTheme][3]));
+        hardMode.setForeground(Color.decode(theme[selectedTheme][2]));
         title.setBounds(280, 10, 505, 200);
-        themes.setBounds(950, 620, 100, 30);
-        themes.setBackground(Color.decode(theme[selectedTheme][6]));
+        themes.setBounds(950, 620, 100, 40);
+        themes.setBackground(Color.decode(theme[selectedTheme][3]));
+        themes.setForeground(Color.decode(theme[selectedTheme][2]));
 
         menu Menu = new menu(); // Create an instance of menu to use non-static methods
         easyMode.addActionListener(Menu);
@@ -56,12 +60,13 @@ public class menu implements ActionListener, ItemListener {
         menu.add(title);
 
         // Set window properties
-        menu.getContentPane().setBackground(Color.decode(theme[selectedTheme][0]));
+        menu.getContentPane().setBackground(Color.decode(theme[selectedTheme][1]));
         menu.setLayout(null);
         menu.setSize(1080, 720);
         menu.setLocationRelativeTo(null);
         menu.setVisible(true);
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menu.setResizable(false);
     }
 
     public void actionPerformed(ActionEvent e) {
