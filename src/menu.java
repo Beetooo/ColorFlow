@@ -6,9 +6,9 @@ import java.awt.event.*;
 public class menu implements ActionListener, ItemListener {
     static JFrame menu;
     static String[][] theme = {
-        {"#232B2D", "#0D1B1E", "#FFF7FA", "#6A4C93", "#FF595E", "#FFCA3A", "#8AC926", "#1982C4","#065143","#7F7EFF","#562C2C","#E0E0CE","#E9724C"},
-        {"#CBC5A8", "#FFF8DC", "#FFDA36", "#f15bb5", "#9b5de5", "#fee440", "#00bbf9", "#00f5d4","#065143","#7F7EFF","#562C2C","#E0E0CE","#E9724C"},
-        {"#5D5882", "#3A3561", "#000000", "#e8aa14", "#1be7ff", "#6eeb83", "#e4ff1a", "#ff5714","#065143","#7F7EFF","#562C2C","#E0E0CE","#E9724C"}
+        {"#232B2D", "#0D1B1E", "#FFF7FA", "#dc143c", "#228b22", "#cc5500", "#87ceeb", "#c2b280","#6f42c1","#ffd700","#d2691e","#afafe0","#ffffdd"},
+        {"#CBC5A8", "#FFF8DC", "#FFDA36", "#e91e63", "#ffc048", "#20c997", "#a6ff00", "#003580","#ff0080","#333333","#f28030","#40e0d0","#ff00ff"},
+        {"#5D5882", "#3A3561", "#000000", "#007bff", "#00ff00", "#ff0080", "#ffa500", "#7f3c86","#a6ff00","#000000","#ffff00","#e91e63","#ff0000"}
     };
     static int selectedTheme=0;
     static JComboBox<String> themes;
@@ -77,10 +77,10 @@ public class menu implements ActionListener, ItemListener {
             menu.dispose();
         } 
         else if (button.getText().equals("Medium")) {
-            flow.game(10, theme[themes.getSelectedIndex()]);
+            flow.game(8, theme[themes.getSelectedIndex()]);
         } 
         else if (button.getText().equals("Hard")) {
-            flow.game(15, theme[themes.getSelectedIndex()]);
+            flow.game(12, theme[themes.getSelectedIndex()]);
             menu.dispose();
         }
     }

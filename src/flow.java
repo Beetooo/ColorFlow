@@ -71,10 +71,9 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
         int filled=0;
         int[]directionX={-1,1,0,0};
         int[]directionY={0,0,-1,1};
-        while(filled<size*size&&color<12) {
+        while(filled<size*size&&color<13) {
             int[][]spots=new int[size*size][2];
             int z=0;
-            System.out.println();
             for(int r=0;r<size;r++){
                 for(int c=0;c<size;c++){
                     if(puzzle[r][c]==0&&fillable(c, r)<2){
@@ -82,9 +81,7 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
                         spots[z][1]=c;
                         z++;
                     }
-                    System.out.print(puzzle[r][c]);
                 }
-                System.out.println();
             }
             position=spots[(int)(Math.random()*z)];
             puzzle[position[0]][position[1]] = color;
@@ -106,7 +103,6 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
                 next = options[(int) (Math.random() * n)];
                 position[1] += next[0];
                 position[0] += next[1];
-                System.out.println(position[1]+","+position[0]);
                 puzzle[position[0]][position[1]] = color;
                 filled++;
                 i++;
@@ -120,27 +116,28 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
     public static int fillable(int positionX, int positionY) {
         int[] directionX = {-1, 1, 0, 0};
         int[] directionY = {0, 0, -1, 1};
+        int[][]visited=new int[size][size];
+        visited[positionY][positionX]=2;
         int adjAloneZeros = 0;
     
         for (int r = 0; r < size; r++) {
             for (int c = 0; c < size; c++) {
-                if (r == positionY && c == positionX) continue;
+                if (visited[r][c]!=0) continue;
                 if (puzzle[r][c] == 0) {
-                    boolean connected = false;
     
                     for (int i = 0; i < 4; i++) {
                         int newX = c + directionX[i];
                         int newY = r + directionY[i];
-                        if (newY == positionY && newX == positionX) continue;
-                        if (inBounds(newX, newY)) {
-                            if(puzzle[newY][newX]==0){
-                                connected = true;
-                                break;
-                            }
+                        if (inBounds(newX, newY)&&puzzle[newY][newX]==0) {
+                            if (visited[newY][newX]>1) continue;
+                            visited[newY][newX]++;
+                            visited[r][c]++;
+                            break;
+                            
                         }
                     }
     
-                    if (!connected) {
+                    if (visited[r][c]==0) {
                         boolean isAdj=false;
                         for (int i = 0; i < 4; i++) {
                             if (c  == positionX + directionX[i] && r  == positionY + directionY[i]) {
@@ -184,6 +181,7 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
 
         public void updateBoard() {
             endPoints = generatePuzzle(size);
+            printPuzzle();
             paths.clear();
             filledCells.clear();
             repaint();
@@ -347,5 +345,26 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
 
     public static void gameWon() {
         System.out.println("you won");
+    }
+    public static void printPuzzle() {
+        // Determine the maximum width required
+        int maxWidth = 0;
+        for (int[] row : puzzle) {
+            for (int cell : row) {
+                int width = String.valueOf(cell).length();
+                if (width > maxWidth) {
+                    maxWidth = width;
+                }
+            }
+        }
+    
+        // Print each row with proper padding
+        for (int[] row : puzzle) {
+            for (int cell : row) {
+                System.out.print(String.format("%" + maxWidth + "d ", cell));
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }
