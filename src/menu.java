@@ -1,14 +1,18 @@
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.*;
 
 public class menu implements ActionListener, ItemListener {
     static JFrame menu;
     static String[][] theme = {
-        {"#232B2D", "#0D1B1E", "#FFF7FA", "#dc143c", "#228b22", "#cc5500", "#87ceeb", "#c2b280","#6f42c1","#ffd700","#d2691e","#afafe0","#ffffdd"},
+        {"#232B2D", "#0D1B1E", "#FFF7FA", "#dc143c", "#228b22", "#d2691e", "#87ceeb", "#c2b280","#6f42c1","#ffd700","#90ee90","#afafe0","#ffffdd"},
         {"#CBC5A8", "#FFF8DC", "#FFDA36", "#e91e63", "#ffc048", "#20c997", "#a6ff00", "#003580","#ff0080","#333333","#f28030","#40e0d0","#ff00ff"},
-        {"#5D5882", "#3A3561", "#000000", "#007bff", "#00ff00", "#ff0080", "#ffa500", "#7f3c86","#a6ff00","#000000","#ffff00","#e91e63","#ff0000"}
+        {"#5D5882", "#3A3561", "#000000", "#007bff", "#00ff00", "#ff0080", "#ffa500", "#7f3c86","#a6ff00","#000000","#ffff00","#e91e63","#ff0000"},
+        {"#c4c0c0", "#e0e0e0", "#000000", "#007bff", "#ffc107", "#20c997", "#c8a2c8", "#ff0080","#fd7e14","#4ca3ff","#00ff00","#343a40","#ffffff"},
+        {"#f5f5dc", "#FFFFF0", "#000000", "#4169e1", "#ffff00", "#ff00ff", "#20c997", "#00ff00","#fd7e14","#800080","#00ffff","#343a40","#ffffff"},
+        {"#f5f5dc", "#FFFFF0", "#000000", "#228b22", "#ff0080", "#900C3F", "#fa8072", "#20c997","#c8a2c8","#fd7e14","#ffc107","#343a40","#ffffff"}
     };
     static int selectedTheme=0;
     static JComboBox<String> themes;
@@ -28,17 +32,26 @@ public class menu implements ActionListener, ItemListener {
         JButton easyMode = new JButton("Easy");
         JButton mediumMode = new JButton("Medium");
         JButton hardMode = new JButton("Hard");
-        String[] colorOptions = {"Theme 1", "Theme 2", "Theme 3" };
+        String[] colorOptions = {"Dark", "Light", "Cool", "Deuteranopia", "Protanopia","Tritanopia"};
         themes = new JComboBox<String>(colorOptions);
         themes.setSelectedIndex(selectedTheme);
 
-        easyMode.setBounds(250, 280, 100, 40);
+        JTextArea description=new JTextArea("How To Play: The goal of ColorFlow is to connect all the colored pairs of dots with each other without crossing over any other paths or leaving any spots uncovered. To connect the paths, click on any of the colored cricles and drag your mouse to connect it to its respective pair. If you want to undo a path, simply right click on the path you want to remove. If you ever get stuck, you can ask for a hint to reveal one of the correct paths. There are three levels of difficulty each with their own size of the board, Easy(5x5), Medium(8x8), and Hard(12x12). In order to get the best score you have to fill the board and connect all paths in a short amount of time, with no undos, and no hints. Good Luck!");
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+        description.setFont(font2);
+        description.setMargin(new Insets(5,5,5,5));
+        description.setEditable(false);
+        description.setBounds(140, 330, 800, 200);
+        description.setBackground(Color.decode(theme[selectedTheme][3]));
+        description.setForeground(Color.decode(theme[selectedTheme][2]));
+        easyMode.setBounds(250, 230, 100, 40);
         easyMode.setBackground(Color.decode(theme[selectedTheme][3]));
         easyMode.setForeground(Color.decode(theme[selectedTheme][2]));
-        mediumMode.setBounds(480, 280, 100, 40);
+        mediumMode.setBounds(480, 230, 100, 40);
         mediumMode.setBackground(Color.decode(theme[selectedTheme][3]));
         mediumMode.setForeground(Color.decode(theme[selectedTheme][2]));
-        hardMode.setBounds(710, 280, 100, 40);
+        hardMode.setBounds(710, 230, 100, 40);
         hardMode.setBackground(Color.decode(theme[selectedTheme][3]));
         hardMode.setForeground(Color.decode(theme[selectedTheme][2]));
         title.setBounds(280, 10, 505, 200);
@@ -57,6 +70,7 @@ public class menu implements ActionListener, ItemListener {
         menu.add(mediumMode);
         menu.add(hardMode);
         menu.add(themes);
+        menu.add(description);
         menu.add(title);
 
         // Set window properties
@@ -78,6 +92,7 @@ public class menu implements ActionListener, ItemListener {
         } 
         else if (button.getText().equals("Medium")) {
             flow.game(8, theme[themes.getSelectedIndex()]);
+            menu.dispose();
         } 
         else if (button.getText().equals("Hard")) {
             flow.game(12, theme[themes.getSelectedIndex()]);
