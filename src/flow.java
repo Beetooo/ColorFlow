@@ -42,9 +42,9 @@ public class flow implements ActionListener, MouseListener, MouseMotionListener 
         newGame.addActionListener(Flow);
         hint.addActionListener(Flow);
 
-        timerLabel.setBounds(950, 130, 100, 40);
+        timerLabel.setBounds(910, 100, 100, 40);
         timerLabel.setForeground(Color.decode(theme[2]));
-        undosLabel.setBounds(950, 230, 100, 40);
+        undosLabel.setBounds(910, 200, 100, 40);
         undosLabel.setForeground(Color.decode(theme[2]));
         home.setBounds(100, 230, 100, 40);
         home.setBackground(Color.decode(theme[3]));

@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "flow",
+            "request": "launch",
+            "mainClass": "flow",
+            "projectName": "ColorFlow_120ef982"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

@@ -15,6 +15,7 @@ public class WinPanel extends JPanel {
 
         double avrScore=stars;
         int scores=0;
+        //update score
         try {
             FileReader reader = new FileReader("src\\score.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);
@@ -32,7 +33,7 @@ public class WinPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        //set up conponents
         JLabel winMessage = new JLabel("Congratulations, You Won!");
         winMessage.setFont(new Font("Arial", Font.BOLD, 18));
         winMessage.setBounds(80,30,250,30);

@@ -3,6 +3,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
+//"transparent glass pane" to cover screen when win panel is shown and block all inputs
 public class TransparentGlassPane extends JPanel {
 
     private JPanel winPanel;
